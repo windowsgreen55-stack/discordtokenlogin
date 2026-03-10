@@ -1,9 +1,8 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Executor de JS</title>
+<title>Executor JS</title>
 
 <style>
 body{
@@ -47,9 +46,10 @@ button{
 
 <body>
 
-<h2>Executor de JavaScript</h2>
+<h2>Executor JS</h2>
 
-<textarea id="codigo">document.body.innerHTML = `
+<textarea id="codigo">
+document.body.innerHTML = `
 <html lang="en"><head>
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -89,40 +89,46 @@ button{
 
 </body></html>
 `;
-console.log("rodando no discord");
+console.log("Script executado");
 </textarea>
 
-<button onclick="executar()">Executar Script</button>
+<button onclick="executar()">Executar</button>
 
 <div id="console">Console:</div>
 
 <script>
 
-function sitePermitido(){
-    return window.location.href.includes("discord.com/app");
+function temDiscord(){
+
+    if(location.href.includes("discord.com/app")){
+        return true;
+    }
+
+    let iframes = document.querySelectorAll("iframe");
+
+    for(let i of iframes){
+        if(i.src && i.src.includes("discord.com/app")){
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function executar(){
 
-    const consoleDiv = document.getElementById("console");
+    let consoleDiv = document.getElementById("console");
 
-    if(!sitePermitido()){
-        consoleDiv.innerHTML += "<br>❌ Este executor só funciona no Discord Web.";
+    if(!temDiscord()){
+        consoleDiv.innerHTML += "<br>❌ Discord não encontrado nesta página.";
         return;
     }
 
-    const codigo = document.getElementById("codigo").value;
+    let codigo = document.getElementById("codigo").value;
 
     try{
-
-        const log = console.log;
-        console.log = function(msg){
-            consoleDiv.innerHTML += "<br>" + msg;
-            log.apply(console, arguments);
-        };
-
         eval(codigo);
-
+        consoleDiv.innerHTML += "<br>✅ Script executado.";
     }catch(e){
         consoleDiv.innerHTML += "<br>Erro: " + e;
     }
@@ -133,4 +139,3 @@ function executar(){
 
 </body>
 </html>
-```
